@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+<?php
+
+define('LARALITE_START', microtime(true));
+
+require __DIR__ . '/vendor/autoload.php';
+
+$app = require_once __DIR__ . '/bootstrap/app.php';
+
+use App\Console\Commands\MakeControllerCommand;
+use Illuminate\Console\Application as ConsoleApplication;
+
+/** @var \Illuminate\Container\Container $app */
+$events = $app->make('events');
+$artisan = new ConsoleApplication($app, $events, 'Laralite Framework', '1.0.0');
+
+// Register custom Artisan generator commands
+$artisan->add(new MakeControllerCommand());
+
+$status = $artisan->run();
+
+exit($status);
